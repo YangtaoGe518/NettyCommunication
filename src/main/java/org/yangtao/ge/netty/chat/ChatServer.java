@@ -1,6 +1,8 @@
 package org.yangtao.ge.netty.chat;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -17,14 +19,17 @@ public class ChatServer {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-        try{
-            ServerBootstrap bootstrap = new ServerBootstrap()
-                    .group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChatServerInitializer());
+        ServerBootstrap bootstrap = new ServerBootstrap()
+                .group(bossGroup, workerGroup)
+                .option(ChannelOption.SO_BACKLOG, 1024)
+                .channel(NioServerSocketChannel.class)
+                .childHandler(new ChatServerInitializer());
 
-            //System.out.println("Server is ready");
-            bootstrap.bind(this.port).sync().channel().closeFuture().sync();
+        try{
+            Channel channel = bootstrap.bind(port).sync().channel();
+            System.out.println("Server is running in port: " + port);
+            //wait for shutdown.
+            channel.closeFuture().sync();
         }finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
@@ -32,6 +37,6 @@ public class ChatServer {
     }
 
     public static void main(String[] args) throws Exception {
-        new ChatServer(8080).run();
+        new ChatServer(9999).run();
     }
 }

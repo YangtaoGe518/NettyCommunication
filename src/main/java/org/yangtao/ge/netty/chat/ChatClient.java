@@ -13,6 +13,7 @@ public class ChatClient {
 
     private final String host;
     private final int port;
+    private boolean stop = false;
 
     public ChatClient(String host, int port) {
         this.host = host;
@@ -21,25 +22,37 @@ public class ChatClient {
 
     public void run() throws Exception{
         EventLoopGroup group = new NioEventLoopGroup();
-
+        Bootstrap bootstrap = new Bootstrap()
+                .group(group)
+                .channel(NioSocketChannel.class)
+                .handler(new ChatClientInitializer());
         try{
-            Bootstrap bootstrap = new Bootstrap()
-                    .group(group)
-                    .channel(NioSocketChannel.class)
-                    .handler(new ChatClientInitializer());
-
             Channel channel = bootstrap.connect(host, port).sync().channel();
-            BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-            while (true){
-                channel.write(input.readLine() + "\r\n");
+            while (true) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                String input = reader.readLine();
+                if (input != null) {
+                    if ("quit".equals(input)) {
+                        System.exit(1);
+                    }
+                    channel.writeAndFlush(input);
+                }
             }
         }finally {
             group.shutdownGracefully();
         }
     }
 
+    public boolean isStop() {
+        return stop;
+    }
+
+    public void setStop(boolean stop) {
+        this.stop = stop;
+    }
+
     public static void main(String[] args) throws Exception{
-        new ChatClient("localhost", 8080).run();
+        new ChatClient("localhost", 9999).run();
     }
 }

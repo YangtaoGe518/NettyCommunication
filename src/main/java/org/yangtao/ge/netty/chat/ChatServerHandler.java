@@ -9,35 +9,50 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
-    private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    public static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        Channel incoming = ctx.channel();
-        for (Channel channel: channels){
-            channel.write("[Server] - " + incoming.remoteAddress() + " has joined!\n");
+        Channel channel = ctx.channel();
+        for (Channel ch : channels){
+            ch.writeAndFlush(
+                    "[" + channel.remoteAddress() + "] " + "has joined");
         }
-        channels.add(incoming);
+        channels.add(channel);
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        Channel incoming = ctx.channel();
-        for (Channel channel: channels){
-            channel.write("[Server] - " + incoming.remoteAddress() + " has left!\n");
+        Channel channel = ctx.channel();
+        for (Channel ch : channels) {
+            ch.writeAndFlush(
+                    "[" + channel.remoteAddress() + "] " + "has left");
         }
-        channels.remove(incoming);
+        channels.remove(channel);
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, String message) throws Exception {
-        Channel incoming = channelHandlerContext.channel();
-        for(Channel channel : channels){
-            if(channel != incoming){
-                channel.write("[" + incoming.remoteAddress() + "] " + message + "\n");
-            }
-            else{
-                channel.write("[You] " + message + "\n");
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        Channel channel = ctx.channel();
+        System.out.println("[" + channel.remoteAddress() + "] " + "online");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        Channel channel = ctx.channel();
+        System.out.println("[" + channel.remoteAddress() + "] " + "offline");
+    }
+
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, String message) throws Exception {
+        Channel channel = ctx.channel();
+        for (Channel ch : channels) {
+            if (ch == channel) {
+                ch.writeAndFlush("[you]：" + message + "\n");
+            } else {
+                ch.writeAndFlush(
+                        "[" + channel.remoteAddress() + "]: " + message + "\n");
             }
         }
     }
