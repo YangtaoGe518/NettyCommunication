@@ -21,9 +21,9 @@ public class ChatClient {
     }
 
     public void run() throws Exception{
-        EventLoopGroup group = new NioEventLoopGroup();
+        EventLoopGroup worker= new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap()
-                .group(group)
+                .group(worker)
                 .channel(NioSocketChannel.class)
                 .handler(new ChatClientInitializer());
         try{
@@ -37,10 +37,11 @@ public class ChatClient {
                         System.exit(1);
                     }
                     channel.writeAndFlush(input);
+                    //System.out.println(input);
                 }
             }
         }finally {
-            group.shutdownGracefully();
+            worker.shutdownGracefully();
         }
     }
 
