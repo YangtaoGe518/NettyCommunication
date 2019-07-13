@@ -1,4 +1,4 @@
-package org.yangtao.ge.tcp.netty;
+package org.yangtao.ge.NettyTcp;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

@@ -1,4 +1,4 @@
-package org.yangtao.ge.netty.chat;
+package org.yangtao.ge.NettyChat;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
