@@ -3,12 +3,14 @@ package org.yangtao.ge.NettyLogin.Client;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.yangtao.ge.NettyLogin.Model.User;
 import org.yangtao.ge.NettyLogin.Protocol.LoginRequestPacket;
 import org.yangtao.ge.NettyLogin.Protocol.LoginResponsePacket;
 import org.yangtao.ge.NettyLogin.Protocol.Packet;
 import org.yangtao.ge.NettyLogin.Protocol.PacketFunction;
 
 import java.util.Date;
+import java.util.Scanner;
 import java.util.UUID;
 
 public class LoginClientHandler extends ChannelInboundHandlerAdapter {
@@ -16,11 +18,20 @@ public class LoginClientHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println(new Date() + ": Start to login ...");
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the user name: ");
+        String userName = scanner.nextLine();
+        System.out.println("Enter the password: ");
+        String password = scanner.nextLine();
+
+        // make a login user
+        User loginUser = new User(userName,password);
+
         //login object for test
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-        loginRequestPacket.setUserId(UUID.randomUUID().toString());
-        loginRequestPacket.setUsername("admin");
-        loginRequestPacket.setPassword("password");
+        loginRequestPacket.setUserId(loginUser.getUserId());
+        loginRequestPacket.setUsername(loginUser.getUsername());
+        loginRequestPacket.setPassword(loginUser.getPassword());
 
         //Buffered
         ByteBuf buffer = PacketFunction.INSTANCE.encode(ctx.alloc(), loginRequestPacket);
