@@ -37,7 +37,7 @@ public class LoginClientHandler extends ChannelInboundHandlerAdapter {
             LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
 
             if (loginResponsePacket.isSuccess()) {
-                System.out.println(new Date() + ": Login successfully");
+                System.out.println(new Date() + ":[UserId]" + loginResponsePacket.getUserId() + " Login successfully");
             } else {
                 System.out.println(new Date() + ": Login fail，because：" + loginResponsePacket.getReason());
             }

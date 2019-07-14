@@ -7,6 +7,8 @@ public class LoginResponsePacket extends Packet {
 
     private String reason;
 
+    private String userId;
+
     @Override
     public Byte getCommand() {
         return LOGIN_RESPONSE;
@@ -26,5 +28,13 @@ public class LoginResponsePacket extends Packet {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

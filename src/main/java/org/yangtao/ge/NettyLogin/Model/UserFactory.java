@@ -10,6 +10,10 @@ public abstract class UserFactory {
         users.add(newUser);
     }
 
+    public static void removeUsers(User oldUser){
+        users.remove(oldUser);
+    }
+
     public static ArrayList<User> getUsers() {
         return users;
     }

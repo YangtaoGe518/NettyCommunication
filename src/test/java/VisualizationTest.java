@@ -2,6 +2,7 @@ import org.yangtao.ge.NettyLogin.Model.User;
 import org.yangtao.ge.NettyLogin.Model.UserFactory;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class VisualizationTest {
     public static void main(String[] args){
@@ -18,5 +19,21 @@ public class VisualizationTest {
         for(User user : users){
             System.out.println(user);
         }
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the user name: ");
+        String userName = scanner.nextLine();
+        System.out.println("Enter the password: ");
+        String password = scanner.nextLine();
+
+        User user4 = new User(userName, password);
+        UserFactory.addUsers(user4);
+
+        System.out.println("After add a new User");
+
+        for(User user : users){
+            System.out.println(user);
+        }
+
     }
 }
