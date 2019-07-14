@@ -1,15 +1,15 @@
 package org.yangtao.ge.NettyLogin.Server;
 
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
-public class LoginServerInitializer extends ChannelInitializer<SocketChannel> {
+public class LoginServerInitializer extends ChannelInitializer<NioSocketChannel> {
 
     @Override
-    protected void initChannel(SocketChannel socketChannel) throws Exception {
+    protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
         // test connection
-        //socketChannel.pipeline().addLast(new CommunicationServerHandler());
+        //nioSocketChannel.pipeline().addLast(new CommunicationServerHandler());
 
-        socketChannel.pipeline().addLast(new LoginServerHandler());
+        nioSocketChannel.pipeline().addLast(new LoginServerHandler());
     }
 }

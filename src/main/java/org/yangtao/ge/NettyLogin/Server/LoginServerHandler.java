@@ -20,7 +20,7 @@ public class LoginServerHandler extends ChannelInboundHandlerAdapter {
         Packet packet = PacketFunction.INSTANCE.decode(requestByteBuf);
 
         // login process
-        if (packet instanceof LoginRequestPacket){
+        if (packet instanceof LoginRequestPacket) {
             LoginRequestPacket loginRequestPacket = (LoginRequestPacket) packet;
             LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
             loginResponsePacket.setVersion(packet.getVersion());
@@ -29,11 +29,16 @@ public class LoginServerHandler extends ChannelInboundHandlerAdapter {
             if (valid(loginRequestPacket)) {
                 loginResponsePacket.setSuccess(true);
                 System.out.println(new Date() + ": login successfully");
+                System.out.println(new Date() + ": [username]" + loginRequestPacket.getUsername());
+                System.out.print(new Date() + ": [userId]" + loginRequestPacket.getUserId());
             } else {
                 loginResponsePacket.setReason("Either your password or username is wrong");
                 loginResponsePacket.setSuccess(false);
                 System.out.println(new Date() + ": login fail");
             }
+
+            ByteBuf responseByteBuf = PacketFunction.INSTANCE.encode(ctx.alloc(), loginResponsePacket);
+            ctx.channel().writeAndFlush(responseByteBuf);
         }
     }
 

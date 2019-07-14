@@ -25,4 +25,16 @@ public class LoginRequestPacket extends Packet{
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

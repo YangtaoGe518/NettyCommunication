@@ -30,10 +30,9 @@ public class LoginClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf byteBuf = (ByteBuf) msg;
-        Packet packet = PacketFunction.INSTANCE.decode(byteBuf);
+        ByteBuf responseByteBuf = (ByteBuf) msg;
+        Packet packet = PacketFunction.INSTANCE.decode(responseByteBuf);
 
-        //Login result
         if (packet instanceof LoginResponsePacket) {
             LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
 
@@ -43,6 +42,5 @@ public class LoginClientHandler extends ChannelInboundHandlerAdapter {
                 System.out.println(new Date() + ": Login fail，because：" + loginResponsePacket.getReason());
             }
         }
-
     }
 }

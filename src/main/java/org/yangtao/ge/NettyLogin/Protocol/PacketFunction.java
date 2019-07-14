@@ -33,7 +33,7 @@ public class PacketFunction {
     private final Map<Byte, Class<? extends Packet>> packetTypeMap;
     private final Map<Byte, Serializer> serializerMap;
 
-    public PacketFunction() {
+    private PacketFunction() {
         //init for packetType
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
@@ -86,9 +86,9 @@ public class PacketFunction {
         return null; // get nothing --- error
     }
 
-    private Serializer getSerializer(byte serializeAlgorithm) {
+    private Serializer getSerializer(byte serializerAlgorithm) {
 
-        return serializerMap.get(serializeAlgorithm);
+        return serializerMap.get(serializerAlgorithm);
     }
 
     private Class<? extends Packet> getRequestType(byte command) {
