@@ -7,6 +7,9 @@ public class LoginClientInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        socketChannel.pipeline().addLast(new CommunicationClientHandler());
+        // test connection
+        //socketChannel.pipeline().addLast(new CommunicationClientHandler());
+
+        socketChannel.pipeline().addLast(new LoginClientHandler());
     }
 }

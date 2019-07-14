@@ -8,7 +8,7 @@
     <artifactId>netty-communication</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>nettycommunication</name>
+    <name>nettyCommunication</name>
 
     <dependencies>
         <dependency>

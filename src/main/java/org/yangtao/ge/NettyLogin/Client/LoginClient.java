@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginClient {
 
-    private static final int MAX_RETRY = 5;
+    private static final int MAX_RETRY = 5; // 5 retries are applied maximum
 
     public static void main(String[] args){
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
