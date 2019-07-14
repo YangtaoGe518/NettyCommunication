@@ -3,6 +3,7 @@ package org.yangtao.ge.NettyLogin.Server;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.yangtao.ge.NettyLogin.Encryptor;
 import org.yangtao.ge.NettyLogin.Model.User;
 import org.yangtao.ge.NettyLogin.Model.UserFactory;
 import org.yangtao.ge.NettyLogin.Protocol.LoginRequestPacket;
@@ -56,7 +57,7 @@ public class LoginServerHandler extends ChannelInboundHandlerAdapter {
         testDataBase(); // apply the simulating database
 
         String loginUserName = loginRequestPacket.getUsername();
-        String loginPassWord = loginRequestPacket.getPassword();
+        String loginPassWord = Encryptor.EncryptedInMd5(loginRequestPacket.getPassword()); // Use encryptors
         ArrayList<User> users = UserFactory.getUsers();
 
         for (User user: users){
@@ -80,17 +81,26 @@ public class LoginServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * Make a very small data base in the server
+     * Make a very small data base in the server, and encrypt the password
      */
     private void testDataBase(){
+
         User user1 = new User("YangtaoGe", "abcd");
         User user2 = new User("TerryGe", "efgh");
         User user3 = new User("GavinGe","ijkl");
         User admin = new User("admin", "password");
 
+
         UserFactory.addUsers(user1);
         UserFactory.addUsers(user2);
         UserFactory.addUsers(user3);
         UserFactory.addUsers(admin);
+
+        ArrayList<User> users = UserFactory.getUsers();
+
+        for (User user: users){
+            String encryptedPassword = Encryptor.EncryptedInMd5(user.getPassword());
+            user.setPassword(encryptedPassword);
+        }
     }
 }

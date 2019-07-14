@@ -11,7 +11,6 @@ import org.yangtao.ge.NettyLogin.Protocol.PacketFunction;
 
 import java.util.Date;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class LoginClientHandler extends ChannelInboundHandlerAdapter {
     @Override
